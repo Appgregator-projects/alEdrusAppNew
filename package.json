@@ -1,7 +1,6 @@
 {
   "name": "aledrusappnew",
   "version": "1.0.0",
-  "main": "node_modules/expo/AppEntry.js",
   "keywords": [
     "react",
     "expo",
@@ -10,25 +9,37 @@
   ],
   "license": "MIT",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web",
     "eject": "expo eject"
   },
   "dependencies": {
-    "expo": "^44.0.0",
-    "expo-status-bar": "~1.2.0",
+    "@react-navigation/native": "^6.1.6",
+    "@react-navigation/stack": "^6.3.2",
+    "expo": "^48.0.0",
+    "expo-constants": "~14.2.1",
+    "expo-splash-screen": "~0.18.1",
+    "expo-status-bar": "~1.4.4",
     "native-base": "3.4.0",
-    "react": "17.0.1",
-    "react-dom": "17.0.1",
-    "react-native": "0.64.3",
-    "react-native-safe-area-context": "3.3.2",
-    "react-native-svg": "12.1.1",
-    "react-native-web": "0.17.1"
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.71.3",
+    "react-native-awesome-alerts": "^2.0.0",
+    "react-native-base64": "^0.2.1",
+    "react-native-ble-manager": "^8.8.0",
+    "react-native-ble-plx": "^2.0.3",
+    "react-native-gesture-handler": "^2.6.0",
+    "react-native-gifted-charts": "^1.2.42",
+    "react-native-linear-gradient": "^2.6.2",
+    "react-native-safe-area-context": "^4.5.0",
+    "react-native-screens": "^3.20.0",
+    "react-native-svg": "13.4.0",
+    "react-native-web": "~0.18.11"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.9"
+    "@babel/core": "^7.20.0"
   },
   "bugs": {
     "url": "https://github.com/GeekyAnts/nativebase-templates/issues"

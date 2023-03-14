@@ -1,4 +1,4 @@
-import { Box, Button, FlatList, Flex, Heading, StatusBar, Text } from 'native-base'
+import { Box, Button, Divider, FlatList, Flex, Heading, Spinner, StatusBar, Text } from 'native-base'
 import React, { useEffect, useMemo, useState } from 'react'
 import { Dimensions } from 'react-native';
 import { BleManager } from 'react-native-ble-plx';
@@ -7,36 +7,36 @@ import { useBluetoothManager } from '../Hooks/useBluetoothManager';
 
 const DevicesScreen = () => {
 	const Manager = useBluetoothManager();
-	const Item = ({data}) => (
-			<Flex width={Dimensions.get('window').width*0.9} mx={4} py={1} flexDir='row' justifyContent="space-between">
-				<Heading>{data.name}</Heading>
-				<Button onPress={()=>handleConnect(data.id)}>Connect</Button>
-			</Flex>
-	);
-	// const Manager = useMemo(() => new BleManager(), []);
+	const [loading, setLoading] = useState(false)
+	let devices = [];
+
 
 	const [scannedDevices, setScannedDevices] = useState([]);
 	const [scanning, setScanning] = useState(false);
 
 	const handleScan = () => {
-		let devices = [];
+		console.log("scan running")
+		setLoading(true)
 		Manager.stopDeviceScan()
 		{!true ? Alert.alert("Bluetooth off","Please turn on bluetooth to connect Zikr ring"): 
 			Manager.startDeviceScan(null, null, (error, device) => {
-					// 	setScanning(true)
-					// if (error) {
-					// 	console.log('Error Scanning : ', error)
-					// 	 setScanning(false)
-					// }
-					// if (
-					// 	// device.isConnectable && 
-					// 	device.name !== null) {
-					// 	console.log(device.name, device.id)
-					// 	devices.push({name : device.name, id : device.id})
-					// }
-					// setTimeout(()=>{
-					// 	Manager.stopDeviceScan()
-					// }, 5000);
+						setScanning(true);
+					if (error) {
+						console.log('Error Scanning : ', error)
+						 setScanning(false)
+					};
+					if (device.isConnectable && device.name !== null) {
+						console.log(device.name, device.id)
+						let index = devices.findIndex(item => item.name === device.name || item.id === device.id);
+						if (index === -1) {
+							devices.push({name : device.name, id : device.id});
+						}
+					};
+					setTimeout(()=>{
+						Manager.stopDeviceScan();
+						setScannedDevices(devices);
+						setLoading(false);
+					}, 5000);
 		
 					//stop
 					// if (device.name === DEVICE_NAME) {
@@ -46,52 +46,49 @@ const DevicesScreen = () => {
 					// 	//terhubung ke perangkat arduino
 					// }
 					// console.log(devices, "after")
-					setScannedDevices(prevState => [...prevState, ...devices])
-			})
-		}
-		console.log("negntot")
+					// setScannedDevices(prevState => [...prevState, ...devices]);
+				})
+			}
 	};
 
-	const handleScan2 = () => {
-		Manager.stopDeviceScan()
-		console.log('test')
-		Manager.startDeviceScan(null, null, (error, device) => {
-			if (error) {
-				console.log('Error Scanningtot : ', error)
-				return
-			}
-			if (device.isConnectable) {
-				console.log(device.name, device.id)
-			}
-
-			//stop
-			if (device.name === DEVICE_NAME) {
-				Manager.stopDeviceScan()
-				setDeviceScan(device)
-				//terhubung ke perangkat arduino
-			}
-		})
-	}
+	const Item = ({item}) => (
+		<Flex width={Dimensions.get('window').width*0.9} mx={4} py={1} flexDir='row' justifyContent="space-between">
+			<Heading fontWeight={300} size='md'>{item?.name}</Heading>
+			<Button colorScheme="tertiary" variant='outline' onPress={()=>handleConnect(item?.id)}>Connect</Button>
+			{/* <Button color='white' bg='#047857' variant="outline" onPress={()=>handleConnect(item?.id)}>Connect</Button> */}
+		</Flex>
+	);
 
 	useEffect(()=>{
-		handleScan2()
+		setTimeout(()=>{
+			console.log(scannedDevices, "scannedDevices")
+			console.log(devices, "devices")
+			setLoading(false)
+		}, 12000)
 	},[])
 
 	return (
 		<>
 			<Box
 				safeAreaTop
+				flex={1}
+				display='flex'
+				justifyContent='center'
+				alignItems='center'
+				flexDirection='column'
 				_dark={{ bg: "blueGray.900" }}
 				_light={{ bg: "blueGray.50" }}
 				style={{marginTop: StatusBar.currentHeight || 0, display:"flex", position:'relative', flexDirection:'column'}}
 			>
-				<Text>DevicesScreen</Text>
-				<FlatList 
-					data={scannedDevices || []} 
-					renerItem={Item}
+				<Box bg="green.200" padding={70} rounded='full' onPress={handleScan}>
+					<Text fontWeight="bold" textAlign='center' as="button">Scan {'\n'}Devices</Text>
+				</Box>
+				{loading && <><Text>Loading...</Text><Spinner /></>}
+				{/* <FlatList 
+					data={scannedDevices || [{name:'kuda', id:'jongkok'}]} 
+					renderItem={Item}
 					keyExtractor={item => item.id} 
-				/>
-
+				/> */}
 			</Box>
 		</>
 	)

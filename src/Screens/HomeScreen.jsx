@@ -30,15 +30,17 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
         ]
     };
     const chartConfig = {
-  backgroundGradientFrom: "#1E2923",
-  backgroundGradientFromOpacity: 0,
-  backgroundGradientTo: "#047857",
-  backgroundGradientToOpacity: 0.5,
-  color: (opacity = 1) => `gray`,
-  strokeWidth: 1, // optional, default 3
-  barPercentage: 0.5,
-  useShadowColorFromDataset: false // optional
-};
+        backgroundGradientFrom: "#1E2923",
+        backgroundGradientFromOpacity: 0,
+        backgroundGradientTo: "#047857",
+        backgroundGradientToOpacity: 0.5,
+        color: (opacity = 1) => `gray`,
+        strokeWidth: 1, // optional, default 3
+        barPercentage: 0.3,
+        useShadowColorFromDataset: false, // optional,
+        propsForBackgroundLines: null,
+
+    };
 
   return (
     <>
@@ -52,7 +54,7 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
         	>
                 <RingComponent setBluetoothValue={setBluetoothValue} bluetoothState={bluetoothState}/>
                 <Box width={Dimensions.get('window').width*0.9} alignSelf='center'bg="white" shadow={4} p={6}rounded="2xl" mt={10} display='flex' flexDirection='row' alignItems='flex-start' justifyContent='space-between'>
-                    <Box>
+                    <Box alignSelf='center' >
                         <Heading color='gray.500' fontWeight={500}>Real Time Tasbih</Heading>
                         <Text>View the number {'\n'}of ring tasbih in real-time.</Text>
                     </Box>
@@ -73,14 +75,22 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
                             <Button onPress={() => handleScan()}>{scanning ? "Stop scanning" : "Scan Device"}</Button>
                             </Stack>
                         )} */}
-                <BarChart
-                    data={data}
-                    width={Dimensions.get('window').width}
-                    height={220}
-                    yAxisLabel="$"
-                    chartConfig={chartConfig}
-                    verticalLabelRotation={30}
-                />
+                        
+                <Box>
+                    <BarChart
+                        data={data}
+                        width={Dimensions.get('window').width}
+                        height={220}
+                        yAxisLabel=""
+                        propsForBackgroundLines={null}
+                        chartConfig={chartConfig}
+                        verticalLabelRotation={0}
+                         style={{
+                            marginVertical: 8,
+                            borderRadius: 16
+                        }}
+                    />
+                </Box>
         	</Box>
         </ScrollView>
         <Button onPress={()=>navigation.navigate('Devices')} position='absolute' bottom={10} right={width*0.1} left={width*0.1} bg='#047857'>+ Add Device</Button>

@@ -58,7 +58,7 @@ const RingComponent = ({ setBluetoothValue, bluetoothState, setAutoConnect }) =>
 					// console.log(characteristic[1].uuid, 'ini serviceUUID')
 					device.monitorCharacteristicForService("0000d0ff-0000-1000-8000-00805f9b34fb", "0000d002-0000-1000-8000-00805f9b34fb", (error, val) => {
 						if(val){
-							// console.log(parseInt(base64.decode(val.value).split(',')[1]), 'ini val')
+							console.log(base64.decode(val.value), 'ini val')
 							setBluetoothValue(parseInt(base64.decode(val.value).split(',')[1]))
 						}
 
@@ -97,13 +97,13 @@ const RingComponent = ({ setBluetoothValue, bluetoothState, setAutoConnect }) =>
 						Manager.stopDeviceScan()
 					}, 5000);
 		
-					stop
-					if (device.name === DEVICE_NAME) {
-						// setScanning(false)
-						Manager.stopDeviceScan()
-						setDeviceScan(device)
-						//terhubung ke perangkat arduino
-					}
+					// stop
+					// if (device.name === DEVICE_NAME) {
+					// 	// setScanning(false)
+					// 	Manager.stopDeviceScan()
+					// 	setDeviceScan(device)
+					// 	//terhubung ke perangkat arduino
+					// }
 					console.log(devices, "after")
 					setScannedDevices(prevState => [...prevState, ...devices])
 			})
@@ -206,7 +206,6 @@ const RingComponent = ({ setBluetoothValue, bluetoothState, setAutoConnect }) =>
 				<VStack gap={1} flex={3}>
 					<Heading color='gray.500' size='md' fontWeight={600}>Zikr Ring</Heading>
 					<Text color='gray.400' onPress={()=>handleConnect()}>Connect</Text>
-					<Text color='gray.400' onPress={()=>handleScan()}>Test</Text>
 				</VStack>
 			</Stack>
 		</>         

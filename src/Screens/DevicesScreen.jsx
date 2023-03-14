@@ -37,7 +37,6 @@ const DevicesScreen = () => {
 					// setTimeout(()=>{
 					// 	Manager.stopDeviceScan()
 					// }, 5000);
-					console.log(device, 'KONTOL')
 		
 					//stop
 					// if (device.name === DEVICE_NAME) {

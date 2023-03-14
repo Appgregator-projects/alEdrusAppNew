@@ -10,6 +10,7 @@ import {
 import RingComponent from '../Components/RingComponent';
 import { Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { BarChart } from "react-native-chart-kit";
 
 
 
@@ -19,6 +20,25 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
 	const height = Dimensions.get('window').height;
 
     const navigation = useNavigation();
+
+    const data = {
+        labels: ["January", "February", "March", "April", "May", "June"],
+        datasets: [
+            {
+            data: [20, 45, 28, 80, 99, 43]
+            }
+        ]
+    };
+    const chartConfig = {
+  backgroundGradientFrom: "#1E2923",
+  backgroundGradientFromOpacity: 0,
+  backgroundGradientTo: "#047857",
+  backgroundGradientToOpacity: 0.5,
+  color: (opacity = 1) => `gray`,
+  strokeWidth: 1, // optional, default 3
+  barPercentage: 0.5,
+  useShadowColorFromDataset: false // optional
+};
 
   return (
     <>
@@ -53,6 +73,14 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
                             <Button onPress={() => handleScan()}>{scanning ? "Stop scanning" : "Scan Device"}</Button>
                             </Stack>
                         )} */}
+                <BarChart
+                    data={data}
+                    width={Dimensions.get('window').width}
+                    height={220}
+                    yAxisLabel="$"
+                    chartConfig={chartConfig}
+                    verticalLabelRotation={30}
+                />
         	</Box>
         </ScrollView>
         <Button onPress={()=>navigation.navigate('Devices')} position='absolute' bottom={10} right={width*0.1} left={width*0.1} bg='#047857'>+ Add Device</Button>

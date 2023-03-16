@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useMemo } from 'react'
+import { Dimensions } from 'react-native';
 import { BleManager } from 'react-native-ble-plx';
 
     
@@ -31,10 +32,14 @@ export const useBluetoothContext = () => {
 
 //create custom provider
 export const AppProvider = ({ children }) => {
-    const Manager = useMemo(() => new BleManager(), []);
+
+    const value = {
+       
+    };
+
     return (
-        <AppContext.Provider value={"x"}>
-            <BluetothContext.Provider value={'y'}>
+        <AppContext.Provider value={value}>
+            <BluetothContext.Provider value={''}>
                 {children}
             </BluetothContext.Provider>
         </AppContext.Provider>

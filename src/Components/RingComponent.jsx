@@ -34,7 +34,6 @@ const RingComponent = ({ setBluetoothValue, bluetoothState, setAutoConnect }) =>
 	const height=Dimensions.get('window').height;
 
 
-	console.count('UPDATING : ')
 
 
 
@@ -192,7 +191,7 @@ const RingComponent = ({ setBluetoothValue, bluetoothState, setAutoConnect }) =>
 
 	return (
 		<>
-			<Stack rounded='3xl' bg='white'p={5} width={width*0.9} alignSelf='center' display='flex' flexDirection='row' alignItems='center' shadow='6' m={StatusBar.currentHeight}>
+			<Stack rounded='2xl' bg='white'p={5} width={width*0.96} alignSelf='center' display='flex' flexDirection='row' alignItems='center' shadow={1}>
 				<Box flex={2}>
 					<Image
 						source={{uri:'https://c8n.tradeling.com/img/plain/pim/rs:auto:600::0/f:webp/up/62cfe67b0f243f6f784a82ee/e5a300f0ccb3a752d063f1ba87525b3f.jpg'}}

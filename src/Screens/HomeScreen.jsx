@@ -6,19 +6,23 @@ import {
 	ScrollView,
 	StatusBar,
     Button,
+    Avatar,
+    Flex,
+    Stack,
 } from "native-base";
 import RingComponent from '../Components/RingComponent';
-import { Dimensions } from 'react-native';
+import { Dimensions, StyleSheet, useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BarChart } from "react-native-chart-kit";
+import { useAppContext } from '../Context/context';
 
 
 
 const HomeScreen = ({bluetoothState, setAutoConnect}) => {
     const [bluetoothValue, setBluetoothValue] = useState(null);
-    const width = Dimensions.get('window').width;
-	const height = Dimensions.get('window').height;
-
+    // const width = Dimensions.get('window').width;
+	// const height = Dimensions.get('window').height;
+    const { width, height } = useWindowDimensions();
     const navigation = useNavigation();
 
     const data = {
@@ -44,19 +48,19 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
 
   return (
     <>
-        <StatusBar barStyle='dark-content'/>
+        <StatusBar barStyle='dark-content' backgroundColor={'red'}/>
+        <Header />
         <ScrollView>
         	<Box
-        		safeAreaTop
         		_dark={{ bg: "blueGray.900" }}
-        		_light={{ bg: "blueGray.50" }}
-        		style={{marginTop: StatusBar.currentHeight || 0, display:"flex", position:'relative', flexDirection:'column'}}
+        		_light={{ bg: "red" }}
+        		style={{marginTop: 10, display:"flex", position:'relative', flexDirection:'column', bg:'red.500'}}
         	>
                 <RingComponent setBluetoothValue={setBluetoothValue} bluetoothState={bluetoothState}/>
-                <Box width={Dimensions.get('window').width*0.9} alignSelf='center'bg="white" shadow={4} p={6}rounded="2xl" mt={10} display='flex' flexDirection='row' alignItems='flex-start' justifyContent='space-between'>
+                <Box width={Dimensions.get('window').width*0.96} alignSelf='center'bg="white" shadow={1} p={6}rounded="2xl" mt={2} display='flex' flexDirection='row' alignItems='flex-start' justifyContent='space-between'>
                     <Box alignSelf='center' >
                         <Heading color='gray.500' fontWeight={500}>Real Time Tasbih</Heading>
-                        <Text>View the number {'\n'}of ring tasbih in real-time.</Text>
+                        <Text color='gray.500'>View the number {'\n'}of ring tasbih in real-time.</Text>
                     </Box>
                     <ValueCounter bluetoothValue={bluetoothValue}/>
                 </Box>
@@ -76,10 +80,10 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
                             </Stack>
                         )} */}
                         
-                <Box>
+                {/* <Box alignSelf='center'>
                     <BarChart
                         data={data}
-                        width={Dimensions.get('window').width}
+                        width={width*0.9}
                         height={220}
                         yAxisLabel=""
                         propsForBackgroundLines={null}
@@ -90,10 +94,10 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
                             borderRadius: 16
                         }}
                     />
-                </Box>
+                </Box> */}
         	</Box>
         </ScrollView>
-        <Button onPress={()=>navigation.navigate('Devices')} position='absolute' bottom={10} right={width*0.1} left={width*0.1} bg='#047857'>+ Add Device</Button>
+        <Button onPress={()=>navigation.navigate('Devices')} position='absolute' bottom={height*0.2} right={width*0.1} left={width*0.1} bg='#047857'>+ Add Device</Button>
     </>
   )
 }
@@ -112,3 +116,57 @@ const ValueCounter = ({ bluetoothValue }) => {
         </>
     )
 }
+
+const Header = () => {
+	return (
+		<>
+			<Flex flexDirection='row' py={2} boxShadow='md' safeAreaTop bg='green.700'>
+				<ImageContainer />
+				<HeaderTitle />
+			</Flex>
+		</>
+	)
+};
+
+const ImageContainer = () => {
+	return (
+		<>
+			<Stack mx={5}>
+				<Avatar size='md' source={{ uri : "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" }}/>
+			</Stack>
+		</>
+	)
+};
+
+
+const HeaderTitle = () => {
+	return (
+		<>
+			<Stack width={Dimensions.get('window').width}>
+				<Text style={styles.titleBig}>Hello,</Text>
+				<Text style={styles.titleSmall}>Faizal Edrus</Text>
+			</Stack>
+		</>
+	)
+};
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'center',
+	},
+	titleBig: { 
+        fontSize : 20,
+        fontWeight : 600,
+        color :'aliceblue'
+		//  fontFamily : "Poppins-Medium" 
+		},
+	titleSmall: { 
+        fontSize : 14,
+        color : 'aliceblue'
+		//  fontFamily : "Poppins-Regular" 
+		}
+});
+

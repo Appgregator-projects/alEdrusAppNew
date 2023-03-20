@@ -113,7 +113,7 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.aledrusappnew"
+    namespace "com.aledrus"
     defaultConfig {
         applicationId 'com.alEdrusAppNew'
         minSdkVersion rootProject.ext.minSdkVersion

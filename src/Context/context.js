@@ -1,47 +1,42 @@
-import React, { createContext, useContext, useMemo } from 'react'
-import { Dimensions } from 'react-native';
-import { BleManager } from 'react-native-ble-plx';
+import React, { createContext, useContext, useMemo, useReducer } from 'react'
+import { AppReducer, initialState } from './reducer';
 
-    
+
 //create the context
-const BluetothContext = createContext(null);
-const AppContext = createContext(null);
+const AppContext = createContext();
+const AppDispatch = createContext();
 
 
 
 //create custom hooks
-export const useAppContext = () => {
-let context = useContext(AppContext);
+export const useAuthState = () => {
+    let context = useContext(AppContext);
     if (context === undefined){
-        throw new error("useAppContext must be used within an context provider")
+        // throw new error("useAuthState must be used within an context provider")
+        console.error("useAuthState must be used within an context provider")
     };
+    console.log("ngentot", context)
     return context;
 };
 
-export const useBluetoothContext = () => {
-    let context = useContext(BluetothContext);
+export const useAppDispatch = () => {
+    let context = useContext(AppDispatch);
     if (context === undefined){
-        throw new error("useAppContext must be used within an context provider")
+        throw new error("useAppDispatch must be used within an context provider")
     };
     return context;
 };
-
-
-
 
 
 //create custom provider
 export const AppProvider = ({ children }) => {
-
-    const value = {
-       
-    };
+    const [state, dispatch] = useReducer(AppReducer, initialState);
 
     return (
-        <AppContext.Provider value={value}>
-            <BluetothContext.Provider value={''}>
+        <AppContext.Provider value={state}>
+            <AppDispatch.Provider value={dispatch}>
                 {children}
-            </BluetothContext.Provider>
+            </AppDispatch.Provider>
         </AppContext.Provider>
     )
 };

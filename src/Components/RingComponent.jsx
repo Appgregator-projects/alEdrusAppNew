@@ -20,7 +20,7 @@ import {
 	Image,
 } from "native-base";
 import base64 from "react-native-base64";
-import { useBluetoothContext } from '../Context/context';
+import { useAppDispatch, useBluetoothContext } from '../Context/context';
 import { useBluetoothManager } from '../Hooks/useBluetoothManager';
 
 
@@ -28,7 +28,7 @@ const RingComponent = ({ setBluetoothValue, bluetoothState, setAutoConnect }) =>
 
 	const [scanning, setScanning] = useState(false);
 	const Manager = useBluetoothManager();
-	
+	const dispatch = useAppDispatch();
 
 	const width=Dimensions.get('window').width;
 	const height=Dimensions.get('window').height;
@@ -59,6 +59,7 @@ const RingComponent = ({ setBluetoothValue, bluetoothState, setAutoConnect }) =>
 						if(val){
 							console.log(base64.decode(val.value), 'ini val')
 							setBluetoothValue(parseInt(base64.decode(val.value).split(',')[1]))
+							dispatch({type : "UPDATE_COUNT", payload : {count : parseInt(base64.decode(val.value).split(',')[1])}})
 						}
 
 						if (error) {
@@ -191,7 +192,7 @@ const RingComponent = ({ setBluetoothValue, bluetoothState, setAutoConnect }) =>
 
 	return (
 		<>
-			<Stack rounded='2xl' bg='white'p={5} width={width*0.96} alignSelf='center' display='flex' flexDirection='row' alignItems='center' shadow={1}>
+			<Stack borderBottomLeftRadius='3xl' bg='white'p={5} width={width} alignSelf='center' display='flex' flexDirection='row' alignItems='center' shadow={1}>
 				<Box flex={2}>
 					<Image
 						source={{uri:'https://c8n.tradeling.com/img/plain/pim/rs:auto:600::0/f:webp/up/62cfe67b0f243f6f784a82ee/e5a300f0ccb3a752d063f1ba87525b3f.jpg'}}

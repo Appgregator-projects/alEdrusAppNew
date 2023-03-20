@@ -10,7 +10,6 @@ ENV['RCT_NEW_ARCH_ENABLED'] = podfile_properties['newArchEnabled'] == 'true' ? '
 platform :ios, podfile_properties['ios.deploymentTarget'] || '13.0'
 install! 'cocoapods',
   :deterministic_uuids => false
-  pod 'GoogleUtilities', :modular_headers => true;
 
 prepare_react_native_project!
 
@@ -38,7 +37,7 @@ elsif podfile_properties.key?('ios.flipper') then
   end
 end
 
-target 'alEdrusAppNew' do
+target 'AlEdrus' do
   use_expo_modules!
   config = use_native_modules!
 

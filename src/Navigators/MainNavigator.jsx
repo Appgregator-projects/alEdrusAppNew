@@ -15,12 +15,12 @@ function MainNavigator() {
 
 	return (
 		<Stack.Navigator
-				initialRouteName='Home'
+				initialRouteName='MainScreen'
 				screenOptions={{
 					headerShown : false
 				}}
 		>
-				<Stack.Screen name="Home" component={HomeScreen} />
+				<Stack.Screen name="MainScreen" component={HomeScreen} />
 				<Stack.Screen name="Devices" component={DevicesScreen} />
 				<Stack.Screen name="DeviceCounter" component={DeviceCounterScreen} />
 		</Stack.Navigator>

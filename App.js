@@ -9,21 +9,22 @@ import {
 	Stack,
 	Heading,
 	Image,
-	Spacer,
+	Button,
 } from "native-base";
 import { Ionicons } from '@expo/vector-icons';
-import { FlatList, SafeAreaView, Alert, useWindowDimensions, TouchableOpacity, View } from "react-native";
-import { BleManager } from 'react-native-ble-plx';
-import { Dimensions } from 'react-native';
-import base64 from "react-native-base64";
+import { useWindowDimensions, TouchableOpacity, View } from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import MainNavigator from "./src/Navigators/MainNavigator";
 import HomeScreen from './src/Screens/HomeScreen';
-import { AppProvider } from "./src/Context/context";
+import { AppProvider, useAuthState } from "./src/Context/context";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AuthNavigator from './src/Navigators/AuthNavigator';
 import { StyleSheet } from "react-native";
 import AppIntroSlider from "react-native-app-intro-slider";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { app, authFirebase, db } from "./src/Config/firebase";
+import { doc, getDoc } from "firebase/firestore";
+import { GetDataObject } from "./src/Utils/storage";
 
 // Define the config
 const config = {
@@ -40,6 +41,61 @@ export default function App() {
 	const [deviceScan, setDeviceScan] = useState(null);
 	const [showIntro, setShowIntro] = useState(true);
 	const { width, height } = useWindowDimensions();
+	const [userUid, setUserUid] = useState('');
+	const auth = getAuth(app);
+	const {state} = useAuthState();
+
+
+	const getUserCredentials = async () => {
+		console.log("in get user credentials");
+		onAuthStateChanged(auth, (user) => {
+		if (user) {
+			// console.log("this is user.uid in navigator: ", user.uid);
+			setUserUid(user.uid);
+
+			// notifShow({
+			// title: "Welcome Back",
+			// message: "Selamat datang kembali, Happy Trading...",
+			// color: "green",
+			// duration: 5000,
+			// });
+		} else {
+			setUserUid(null);
+			// notifShow({
+			// title: "Ups.. Kamu belum login, nih!",
+			// message: "Silahkan login untuk menikmati fitur lengkap kami",
+			// color: "red",
+			// duration: 5000,
+			// });
+		}
+		});
+		try {
+			const docRef = doc(db, "users", authFirebase.currentUser.uid);
+			const docSnap = await getDoc(docRef);
+			// console.log(docSnap.data(), "dataUser docsnap.data()");
+
+		} catch (error) {
+			console.log(error.message, "error in getting user data");
+		}
+
+		// StoreDataObject("user", docSnap.data());
+
+		// const userData = await AsyncStorage.getItem('userData')
+		// console.log(userData,'current async storage user')
+		// setUser(userData)
+	};
+
+  const getUserFromStorage = async () => {
+    const x = await GetDataObject("userData");
+    if (x) setUserStorage(x);
+  };
+
+  useEffect(() => {
+    getUserCredentials();
+    getUserFromStorage();
+    return () => {};
+  }, []);
+
 
 	
 	const handleDisconnect = (device) => {
@@ -96,7 +152,8 @@ export default function App() {
 		<NavigationContainer>
 			<NativeBaseProvider>
 				<AppProvider>
-					{showIntro ? 
+					<Button mt={20} onPress={()=>console.log(user)}>Check user</Button>
+					{false ? 
 						<AppIntroSlider 
 							data={data}
 							renderItem={renderItem}
@@ -121,30 +178,25 @@ export default function App() {
 									return <Ionicons name={iconName} size={size} color={color} />;
 								},
 								activeTintColor: '#FFD600',
-								tabBarActiveBackgroundColor :"green",
+								tabBarActiveBackgroundColor :"054705",
 								// inactiveTintColor: 'gray',
-								
 								tabBarShowLabel:false,
 							})}
 						>
 							<Tab.Screen 
 								name="Home" 
-								component={
-									// !userUid ? AuthNavigation  : 
-									AuthNavigator}
-								options={{
-									tabBarButton : props => <CustomTabBarButton {...props}/>
-								}}
+								component={!user ? AuthNavigator  : MainNavigator}
+								// options={{
+								// 	tabBarButton : props => <CustomTabBarButton {...props}/>
+								// }}
 							 />
-							<Tab.Screen 
+							{/* <Tab.Screen 
 								name="Home2" 
-								component={
-									// !userUid ? AuthNavigation  : 
-									MainNavigator}
-								options={{
-									tabBarButton : props => <CustomTabBarButton {...props}/>
-								}}
-							 />
+								component={true ?  MainNavigator : AuthNavigator}
+								// options={{
+								// 	tabBarButton : props => <CustomTabBarButton {...props}/>
+								// }}
+							 /> */}
 						</Tab.Navigator>
 					 }
 				</AppProvider>
@@ -168,7 +220,7 @@ function ToggleDarkMode() {
 			/>
 		</HStack>
 	);
-}
+};
 
 
 
@@ -197,23 +249,23 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(47,49,54,0.5)',
   },
 	tabBarStyle : {
-		backgroundColor : "transparent",
+		backgroundColor : "#054705",
 		borderTopWidth : 0,
 		// marginHorizontal: Dimensions.get('window')*0.2,
 		// justifyContent : 'space-evenly',
 		// borderRadius:100,
-		position:"relative",
-		bottom : 7,
-		right : 10,
-		left : 10
+		// position:"absolute",
+		// bottom : 7,
+		// right : 10,
+		// left : 10
 	},
 	wrapper : {
 		flex : 1,
 		alignItems : 'center'
 	},
 	active : {
-		flex :1,
-		position : "absolute",
+		// flex :1,
+		// position : "absolute",
 		width :50,
 		height : 50,
 		borderRadius : 50/2,

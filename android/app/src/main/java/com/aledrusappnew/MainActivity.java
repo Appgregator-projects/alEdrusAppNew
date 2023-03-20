@@ -1,5 +1,4 @@
 package com.alEdrusAppNew;
-import android.os.Bundle;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -18,10 +17,6 @@ public class MainActivity extends ReactActivity {
     // coloring the background, status bar, and navigation bar.
     // This is required for expo-splash-screen.
     setTheme(R.style.AppTheme);
-    super.onCreate(null);
-  }
-    @Override
-  protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(null);
   }
 

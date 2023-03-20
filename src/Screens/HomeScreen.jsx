@@ -9,12 +9,13 @@ import {
     Avatar,
     Flex,
     Stack,
+    Image
 } from "native-base";
 import RingComponent from '../Components/RingComponent';
 import { Dimensions, StyleSheet, useWindowDimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { BarChart } from "react-native-chart-kit";
-import { useAppContext } from '../Context/context';
+import { useAuthState } from '../Context/context';
 
 
 
@@ -64,22 +65,7 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
                     </Box>
                     <ValueCounter bluetoothValue={bluetoothValue}/>
                 </Box>
-            
-                    {/* <Flex key="S" p={2} safeAreaTop  bg='green.300' position='absolute' zIndex={10} top={0} right={0} left={0} flexDir='row' justifyContent='space-between'>
-                        <Heading>Zikr Ring Counter</Heading>x
-                        <ToggleDarkMode />
-                    </Flex> */}
-
-                    {/* {deviceScan ? (
-                        <Stack alignItems={'center'} justifyContent='center'>
-                        <Button onPress={() => handleDisconnect(deviceScan)}>Disconnect</Button>
-                        </Stack>
-                        ) : (
-                            <Stack alignItems={'center'} justifyContent='center'>
-                            <Button onPress={() => handleScan()}>{scanning ? "Stop scanning" : "Scan Device"}</Button>
-                            </Stack>
-                        )} */}
-                        
+                                   
                 {/* <Box alignSelf='center'>
                     <BarChart
                         data={data}
@@ -95,9 +81,13 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
                         }}
                     />
                 </Box> */}
+                <Box borderRadius='xl' my={1} shadow='2' height={height*0.5} bg='red.100' position='relative'>
+                    <Heading color='white' size='3xl' fontWeight={400}>20:00</Heading>
+                    <Image zIndex={-1} source={{uri : 'https://images.pexels.com/photos/13670194/pexels-photo-13670194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'}} position='absolute' width='full' height='full' alt='clock' /> 
+                </Box>
         	</Box>
         </ScrollView>
-        <Button onPress={()=>navigation.navigate('Devices')} position='absolute' bottom={height*0.2} right={width*0.1} left={width*0.1} bg='#047857'>+ Add Device</Button>
+        <Button onPress={()=>navigation.navigate('Devices')} position='absolute' bottom={height*0.02} right={width*0.1} left={width*0.1} bg='#047857'>+ Add Device</Button>
     </>
   )
 }
@@ -107,44 +97,45 @@ export default HomeScreen;
 
 
 const ValueCounter = ({ bluetoothValue }) => {
-
+    const {user}  = useAuthState();
     return (
         <>
             <Box  bg="#9ae6b4" p={5} rounded="full" height='auto'>
-                <Heading fontWeight={500} color='gray.700'>{bluetoothValue || 0}</Heading>
+                <Heading fontWeight={500} color='gray.700'>{user.count || bluetoothValue || 0}</Heading>
             </Box>
         </>
     )
 }
 
 const Header = () => {
+    const {user} = useAuthState();
 	return (
 		<>
 			<Flex flexDirection='row' py={2} boxShadow='md' safeAreaTop bg='green.700'>
-				<ImageContainer />
-				<HeaderTitle />
+				<ImageContainer user={user}/>
+				<HeaderTitle user={user}/>
 			</Flex>
 		</>
 	)
 };
 
-const ImageContainer = () => {
+const ImageContainer = ({ user }) => {
 	return (
 		<>
 			<Stack mx={5}>
-				<Avatar size='md' source={{ uri : "https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" }}/>
+				<Avatar size='md' source={{ uri : user?.photoUrl }}/>
 			</Stack>
 		</>
 	)
 };
 
 
-const HeaderTitle = () => {
+const HeaderTitle = ({ user }) => {
 	return (
 		<>
 			<Stack width={Dimensions.get('window').width}>
 				<Text style={styles.titleBig}>Hello,</Text>
-				<Text style={styles.titleSmall}>Faizal Edrus</Text>
+				<Text style={styles.titleSmall}>{user?.displayName}</Text>
 			</Stack>
 		</>
 	)

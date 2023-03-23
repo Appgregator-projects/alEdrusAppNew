@@ -25,6 +25,9 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { app, authFirebase, db } from "./src/Config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { GetDataObject } from "./src/Utils/storage";
+import Navigators from "./src/Navigators/Navigators";
+
+
 
 // Define the config
 const config = {
@@ -43,8 +46,6 @@ export default function App() {
 	const { width, height } = useWindowDimensions();
 	const [userUid, setUserUid] = useState('');
 	const auth = getAuth(app);
-	const {state} = useAuthState();
-
 
 	const getUserCredentials = async () => {
 		console.log("in get user credentials");
@@ -85,16 +86,22 @@ export default function App() {
 		// setUser(userData)
 	};
 
-  const getUserFromStorage = async () => {
-    const x = await GetDataObject("userData");
-    if (x) setUserStorage(x);
-  };
+	const getUserFromStorage = async () => {
+		const x = await GetDataObject("userData");
+		if (x) setUserStorage(x);
+	};
 
-  useEffect(() => {
-    getUserCredentials();
-    getUserFromStorage();
-    return () => {};
-  }, []);
+
+
+
+
+
+	useEffect(() => {
+		getUserCredentials();
+		getUserFromStorage();
+		// const 
+		return () => {};
+	}, []);
 
 
 	
@@ -131,6 +138,18 @@ export default function App() {
 			image : 'https://static2.mumzworld.com/media/catalog/product/s/b/sbf-zikr1-18c-zikr-smart-tasbih-ring-18mm-rose-gold-16389700426.jpg'
 		},
 	];
+    useEffect(()=>{
+        async () => {
+            let { status } = await Location.getForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.log("permission not granted")
+                return;
+            }
+            let address = await Location.reverseGeocodeAsync(location.coords);
+            console.log("address : ", address)
+        }
+    },[])
+
 
 
 	const renderItem = ({item}) => {
@@ -152,7 +171,6 @@ export default function App() {
 		<NavigationContainer>
 			<NativeBaseProvider>
 				<AppProvider>
-					<Button mt={20} onPress={()=>console.log(user)}>Check user</Button>
 					{false ? 
 						<AppIntroSlider 
 							data={data}
@@ -160,44 +178,7 @@ export default function App() {
 							onDone={()=>setShowIntro(false)}
 						/>
 					 : 
-					 	<Tab.Navigator
-							initialRouteName="Home"
-							screenOptions={({ route }) => ({
-								headerShown : false,
-								tabBarStyle : styles.tabBarStyle,
-								tabBarActiveTintColor : "#FFD600",
-								tabBarIcon: ({ color, size }) => {
-									let iconName;
-									if (route.name === 'Home') {
-										iconName = 'home';
-									} else if (route.name === 'Home2') {
-										iconName = 'home';
-									} else {
-										iconName ='pricetags';
-									}
-									return <Ionicons name={iconName} size={size} color={color} />;
-								},
-								activeTintColor: '#FFD600',
-								tabBarActiveBackgroundColor :"054705",
-								// inactiveTintColor: 'gray',
-								tabBarShowLabel:false,
-							})}
-						>
-							<Tab.Screen 
-								name="Home" 
-								component={!user ? AuthNavigator  : MainNavigator}
-								// options={{
-								// 	tabBarButton : props => <CustomTabBarButton {...props}/>
-								// }}
-							 />
-							{/* <Tab.Screen 
-								name="Home2" 
-								component={true ?  MainNavigator : AuthNavigator}
-								// options={{
-								// 	tabBarButton : props => <CustomTabBarButton {...props}/>
-								// }}
-							 /> */}
-						</Tab.Navigator>
+						<Navigators />
 					 }
 				</AppProvider>
 			</NativeBaseProvider>

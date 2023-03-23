@@ -29,6 +29,12 @@
         </array>
       </dict>
     </array>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>Allow Al Edrus to use your location to provide accurate prayer times</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>Allow Al Edrus to use your location to provide accurate prayer times</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>Allow Al Edrus to use your location to provide accurate prayer times</string>
     <key>CFBundleVersion</key>
     <string>1</string>
     <key>LSRequiresIPhoneOS</key>

@@ -21,7 +21,8 @@ let getZikrCount = async () => {
 let getConnectedDevices = async () => {
   try {
     const user = await AsyncStorage.getItem("connectedDevices");
-    return user == null ? "" : JSON.parse(user);
+    // return user == null ? "" : JSON.parse(user);
+    if (user) return JSON.parse(user)
   } catch (e) {
     console.log(error);
   }
@@ -30,7 +31,7 @@ let getConnectedDevices = async () => {
 
 export const initialState = {
   getUser: "" ||  getUser(),
-  user : "anjas" ||  getUser(),
+  user : null ||  getUser(),
   getZikrCount : 0 ||  getZikrCount(),
   getConnectedDevices :  getConnectedDevices() || [],
   loading: false,
@@ -101,6 +102,11 @@ export const AppReducer = (initialState, action) => {
       return {
         ...initialState,
         connectedDevice : action.payload.device
+      }
+    case "UPDATE_ADDRESS":
+      return {
+        ...initialState,
+        address : action.payload.address
       }
 
     default:

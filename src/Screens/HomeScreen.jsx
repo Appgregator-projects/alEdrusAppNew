@@ -87,7 +87,7 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
                 </Box>
         	</Box>
         </ScrollView>
-        <Button onPress={()=>navigation.navigate('Devices')} position='absolute' bottom={height*0.02} right={width*0.1} left={width*0.1} bg='#047857'>+ Add Device</Button>
+        {/* <Button onPress={()=>navigation.navigate('Devices')} position='absolute' bottom={height*0.02} right={width*0.1} left={width*0.1} bg='#047857'>+ Add Device</Button> */}
     </>
   )
 }

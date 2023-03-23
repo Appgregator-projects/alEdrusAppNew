@@ -15,7 +15,6 @@ export const useAuthState = () => {
         // throw new error("useAuthState must be used within an context provider")
         console.error("useAuthState must be used within an context provider")
     };
-    console.log("ngentot", context)
     return context;
 };
 
@@ -30,10 +29,10 @@ export const useAppDispatch = () => {
 
 //create custom provider
 export const AppProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(AppReducer, initialState);
+    const [user, dispatch] = useReducer(AppReducer, initialState);
 
     return (
-        <AppContext.Provider value={state}>
+        <AppContext.Provider value={user}>
             <AppDispatch.Provider value={dispatch}>
                 {children}
             </AppDispatch.Provider>

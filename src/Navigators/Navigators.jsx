@@ -4,13 +4,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useAppDispatch, useAuthState } from '../Context/context';
 import AuthNavigator from './AuthNavigator';
 import MainNavigator from './MainNavigator';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button } from 'native-base';
 import DevicesScreen from '../Screens/DevicesScreen';
 import PrayerScreen from '../Screens/PrayerScreen';
 import * as Location from 'expo-location';
 import dayjs from 'dayjs';
 import axios from 'axios';
+import QiblaScreen from '../Screens/QiblaScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -35,6 +36,12 @@ const Navigators = () => {
                     address : address
                 }
             });
+            dispatch({
+                type : "UPDATE_LOCATION",
+                payload : {
+                    location : location
+                }
+            })
             return;
 		};
 	};
@@ -59,7 +66,9 @@ const Navigators = () => {
             			iconName = 'add-circle-outline';
             		} else if (route.name === 'Prayer') {
                         return <MaterialCommunityIcons name="hands-pray" size={size} color={color} />
-            		}
+            		} else if (route.name === 'Qibla') {
+                        return <FontAwesome5 name="kaaba" size={size} color={color} />
+                    }
             		return <Ionicons name={iconName} size={size} color={color} />;
             	},
                     activeTintColor: '#FFD600',
@@ -79,6 +88,10 @@ const Navigators = () => {
             <Tab.Screen 
             	name="Prayer" 
             	component={PrayerScreen}
+             />
+            <Tab.Screen 
+            	name="Qibla" 
+            	component={QiblaScreen}
              />
 		</Tab.Navigator>
     </>

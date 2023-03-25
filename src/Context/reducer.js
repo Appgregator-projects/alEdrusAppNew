@@ -102,12 +102,17 @@ export const AppReducer = (initialState, action) => {
       return {
         ...initialState,
         connectedDevice : action.payload.device
-      }
+      };
     case "UPDATE_ADDRESS":
       return {
         ...initialState,
         address : action.payload.address
-      }
+      };
+    case "UPDATE_LOCATION":
+      return {
+        ...initialState,
+        location : action.payload.location
+      };
 
     default:
       throw new Error(`Unhandled action type: ${action.type}`);

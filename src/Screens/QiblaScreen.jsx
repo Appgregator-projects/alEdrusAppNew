@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Image, View, useWindowDimensions } from 'react-native';
-import { Magnetometer } from 'expo-sensors';
 import { Box, Button, Flex, Heading, Stack, StatusBar, Text } from 'native-base';
 import CompassHeading from 'react-native-compass-heading';
 import { useAuthState } from '../Context/context';
@@ -8,15 +7,14 @@ import { useAuthState } from '../Context/context';
 
 const QiblaScreen = () => {
     const { height, width } = useWindowDimensions();
-    const [subscription, setSubscription] = useState(null);
-    const [magnetometer, setMagnetometer] = useState(0);
     const [heading, setHeading] = useState(0);
-    const { location } = useAuthState();
+    const { location, address } = useAuthState();
     const [qibladValue, setQibladValue] = useState(0);
 
     const calculate = () => {
-        let { latitude } = location.coords;
-        let { longitude } = location.coords;
+        let { latitude } = location?.coords;
+        let { longitude } = location?.coords;
+      
         const PI = Math.PI;
         let lat_kaaba = (21.4225 * PI) / 180;
         let lng_kaaba = (39.8264 * PI) / 180;
@@ -29,46 +27,10 @@ const QiblaScreen = () => {
       }
 
     useEffect(() => {
-        _toggle();
         calculate();
         return () => {
-            _unsubscribe();
         };
     }, []);
-
-    const _toggle = () => {
-        if (subscription) {
-            _unsubscribe();
-        } else {
-            _subscribe();
-        }
-    };
-
-    const _subscribe = () => {
-        setSubscription(
-            Magnetometer.addListener((data) => {
-                setMagnetometer(_angle(data));
-            })
-        );
-    };
-
-    const _unsubscribe = () => {
-        subscription && subscription.remove();
-        setSubscription(null);
-    };
-
-    const _angle = (magnetometer) => {
-        let angle = 0;
-        if (magnetometer) {
-            let { x, y, z } = magnetometer;
-            if (Math.atan2(y, x) >= 0) {
-                angle = Math.atan2(y, x) * (180 / Math.PI);
-            } else {
-                angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
-            }
-        }
-        return Math.round(angle);
-    };
 
     const _direction = (degree) => {
         if (degree >= 22.5 && degree < 67.5) {
@@ -117,36 +79,9 @@ const QiblaScreen = () => {
     return (
         <>
             <StatusBar barStyle={'light-content'}/>
-            <Stack bg='black' style={{width, height}} safeAreaTop>
-                <Flex flexDirection='row' alignItems='center'>
-                    <Stack style={{ alignItems: 'center' }}>
-                        <Box style={{ position: 'absolute', width: width, alignItems: 'center', top: 0 }}>
-                            <Image source={require('../../assets/compass_pointer.png')} 
-                                style={{
-                                    height: height / 26,
-                                    resizeMode: 'contain'
-                                }} 
-                            />
-                        </Box>
-                    </Stack>
-                </Flex>
-                <Flex>
-                    <Heading>{parseInt(360-heading)}</Heading>
-                </Flex>
-
-                <Flex style={{ flexDirection : 'row', justifyContent: 'center', alignItems: 'center', flex: 1 }} size={2} >
-                    <Text 
-                        style={{
-                            color: '#fff',
-                            fontSize: height / 27,
-                            width: width,
-                            // position: 'absolute',
-                            textAlign: 'center'
-                        }}
-                    >
-                        {_degree(magnetometer)}°
-                    </Text>
-
+            <Stack bg='dark.100' style={{width, height}} safeAreaTop>
+                <Flex style={{ flexDirection : 'column', alignItems: 'center', flex: 1, width, height}}>
+                   
                     <Stack alignSelf='center'>
                         <Image 
                             source={require("../../assets/compass_bg.png")} 
@@ -170,9 +105,16 @@ const QiblaScreen = () => {
                                 justifyContent: 'center',
                                 alignItems: 'center',
                                 resizeMode: 'contain',
-                                transform: [{ rotate: qibladValue + 'deg' }]
+                                transform: [{ rotate: parseInt(qibladValue - heading) + 'deg' }]
                             }} 
                         />
+                    </Stack>
+                    <Stack py={5}>
+                        <Flex flexDirection='column' alignItems='center' >
+                            <Heading color='amber.200'>Heading : {heading}° {_direction(heading)}</Heading>
+                            <Heading size='sm' color='amber.100'>QIBLAT : {qibladValue?.toFixed(2)}° from True North</Heading>
+                        </Flex>
+                        <Heading mt={10} color='amber.100' fontSize={12}>{address[0]?.name}, {address[0]?.city}</Heading>
                     </Stack>
                 </Flex>
             </Stack>

@@ -1,5 +1,7 @@
 package com.alEdrusAppNew;
-
+2	import android.content.res.Configuration;
+3	import expo.modules.ApplicationLifecycleDispatcher;
+4	import expo.modules.ReactNativeHostWrapper;
 import android.app.Application;
 import android.content.res.Configuration;
 import androidx.annotation.NonNull;
@@ -69,8 +71,8 @@ public class MainApplication extends Application implements ReactApplication {
   }
 
   @Override
-  public void onConfigurationChanged(@NonNull Configuration newConfig) {
-    super.onConfigurationChanged(newConfig);
-    ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
+    public void onConfigurationChanged(Configuration newConfig) {
+  	    super.onConfigurationChanged(newConfig);
+     ApplicationLifecycleDispatcher.onConfigurationChanged(this, newConfig);
   }
 }

@@ -65,7 +65,7 @@ const QiblaScreen = () => {
     };
 
     useEffect(() => {
-        const degree_update_rate = 0;
+        const degree_update_rate = 10;
     
         CompassHeading.start(degree_update_rate, ({heading, accuracy}) => {
           setHeading(heading);
@@ -112,7 +112,7 @@ const QiblaScreen = () => {
                         <Stack py={5}>
                             <Flex flexDirection='column' alignItems='center' >
                                 <Heading color='amber.200'>Heading : {heading}° {_direction(heading)}</Heading>
-                                <Heading size='sm' color='amber.100'>QIBLAT : {qibladValue?.toFixed(2)}° from True North</Heading>
+                                <Heading size='sm' color='amber.100'>KIBLAT : {qibladValue?.toFixed(2)}° from True North</Heading>
                             </Flex>
                             <Heading mt={10} color='amber.100' fontSize={12}>{address[0]?.name}, {address[0]?.city}</Heading>
                         </Stack>

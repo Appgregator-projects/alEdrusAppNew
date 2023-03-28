@@ -33,6 +33,7 @@
     "expo": "33.0.0",
     "expo-cli": "^6.3.2",
     "expo-constants": "~14.2.1",
+    "expo-dev-client": "^2.1.6",
     "expo-location": "~15.1.1",
     "expo-modules-core": "1.0.3",
     "expo-splash-screen": "~0.18.1",

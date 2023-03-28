@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 3.8.0"
+    "version": ">= 0.47.0"
   },
   "build": {
     "development": {
@@ -9,29 +9,23 @@
         "gradleCommand": ":app:assembleDebug"
       },
       "ios": {
-        "buildConfiguration": "Debug",
-        "resourceClass": "m-medium"
+        "buildConfiguration": "Debug"
       }
     },
     "preview": {
-      "distribution": "internal",
-      "ios": {
-        "resourceClass": "m-medium"
-      }
-    },
-    "preview2": {
       "android": {
+        "buildType": "apk",
         "gradleCommand": ":app:assembleRelease",
-        "buildType": "apk"
+        "developmentClient": true
       }
     },
-    "production": {
-      "ios": {
-        "resourceClass": "m-medium"
-      }
-    }
+    "production": {}
   },
   "submit": {
-    "production": {}
+    "production": {
+      "ios" : {
+        "appleId" : "smuel.rr@gmail.com"
+      }
+    }
   }
 }

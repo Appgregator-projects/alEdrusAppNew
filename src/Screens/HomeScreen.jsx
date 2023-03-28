@@ -8,8 +8,10 @@ import {
     Button,
     Avatar,
     Flex,
+    Menu,
     Stack,
-    Image
+    Image,
+    Pressable
 } from "native-base";
 import RingComponent from '../Components/RingComponent';
 import { Dimensions, StyleSheet, useWindowDimensions } from 'react-native';
@@ -81,10 +83,6 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
                         }}
                     />
                 </Box> */}
-                <Box borderRadius='xl' my={1} shadow='2' height={height*0.5} bg='red.100' position='relative'>
-                    <Heading color='white' size='3xl' fontWeight={400}>20:00</Heading>
-                    <Image zIndex={-1} source={{uri : 'https://images.pexels.com/photos/13670194/pexels-photo-13670194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'}} position='absolute' width='full' height='full' alt='clock' /> 
-                </Box>
         	</Box>
         </ScrollView>
         {/* <Button onPress={()=>navigation.navigate('Devices')} position='absolute' bottom={height*0.02} right={width*0.1} left={width*0.1} bg='#047857'>+ Add Device</Button> */}
@@ -123,7 +121,15 @@ const ImageContainer = ({ user }) => {
 	return (
 		<>
 			<Stack mx={5}>
-				<Avatar size='md' source={{ uri : user?.photoUrl }}/>
+                <Menu w="190" trigger={triggerProps => {
+                    return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
+                                <Avatar size='md' source=   {{ uri : user?.photoUrl }} />
+                        </Pressable>
+                    }}
+                >
+                    <Menu.Item onPress={()=>console.log("pressed!")}>Log Out</Menu.Item>
+                    <Menu.Item>Cookie</Menu.Item>
+                </Menu>
 			</Stack>
 		</>
 	)

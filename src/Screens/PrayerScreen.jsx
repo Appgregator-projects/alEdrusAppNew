@@ -60,12 +60,12 @@ const PrayerScreen = () => {
                     <Heading color='blueGray.200'>Prayers</Heading>
                     {address? 
                         <Heading color='blueGray.200' size='sm' fontWeight={400}>{`${address[0]?.district}, ${address[0]?.city}, ${address[0]?.country}`}</Heading>
-                    : null}
+                    : <Heading color='blueGray.200' size='sm' fontWeight={400}>Waiting for location...</Heading>}
                 </Stack>
                 <Stack alignItems='center' justifyContent='center' display='flex' flexDirection='column' flex={1}>
                     <Box p={5} rounded="lg" width={width*0.9}>
                         <Heading textAlign='center' color="gray.800" fontWeight={500}>Thursday, March 21 2023</Heading>
-                        <Heading textAlign='center' color="gray.700" size='sm'fontWeight={400}>{hijriyahDate ? `${hijriyahDate?.weekday?.en}, ${hijriyahDate?.day} ${hijriyahDate?.month?.en} ${hijriyahDate?.year}`: null}</Heading>
+                        <Heading textAlign='center' color="gray.700" size='sm'fontWeight={400}>{hijriyahDate ? `${hijriyahDate?.weekday?.en}, ${hijriyahDate?.day} ${hijriyahDate?.month?.en} ${hijriyahDate?.year}`: "Loading.."}</Heading>
                     </Box>
                     <Box p={5} alignSelf='center' bg="#252525" opacity={0.8} rounded="lg" width={width*0.9}>
                         <HStack p={1}>

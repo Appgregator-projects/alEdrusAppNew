@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image, View, useWindowDimensions } from 'react-native';
+import { Image, View, useWindowDimensions, Vibration } from 'react-native';
 import { Box, Button, Flex, Heading, Spinner, Stack, StatusBar, Text } from 'native-base';
 import CompassHeading from 'react-native-compass-heading';
 import { useAuthState } from '../Context/context';
@@ -12,8 +12,7 @@ const QiblaScreen = () => {
     const [qibladValue, setQibladValue] = useState(0);
 
     const calculate = () => {
-        let { latitude } = location?.coords;
-        let { longitude } = location?.coords;
+        let { latitude, longitude } = location?.coords ?? location?.coords;
       
         const PI = Math.PI;
         let lat_kaaba = (21.4225 * PI) / 180;
@@ -27,10 +26,10 @@ const QiblaScreen = () => {
       }
 
     useEffect(() => {
-        calculate();
-        return () => {
-        };
-    }, []);     
+        if (location) {
+            calculate();
+        }
+    }, [location]);     
 
     const _direction = (degree) => {
         if (degree >= 22.5 && degree < 67.5) {
@@ -65,18 +64,24 @@ const QiblaScreen = () => {
     };
 
     useEffect(() => {
-        const degree_update_rate = 10;
+        const degree_update_rate = 0;
     
         CompassHeading.start(degree_update_rate, ({heading, accuracy}) => {
           setHeading(heading);
         });
-    
+        
         return () => {
           CompassHeading.stop();
         };
       }, []);
 
-    return address ? 
+      useEffect(()=>{
+        if (parseInt(qibladValue - heading) === -360) {
+            Vibration.vibrate();
+        }
+      },[heading])
+
+    return location ? 
             <>
                 <StatusBar barStyle={'light-content'}/>
                 <Stack bg='dark.100' style={{width, height}} safeAreaTop>
@@ -121,8 +126,9 @@ const QiblaScreen = () => {
             </> 
         : 
             <>
-                <Stack style={{width, height, display : 'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', flex:1}}>
-                    <Spinner />
+                <Stack backgroundColor='dark.100' style={{width, height, display : 'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', flex:1}}>
+                    <Spinner color='amber.100'/>
+                    <Heading color='amber.100' size='sm' fontStyle='italic'>Waiting for compass..</Heading>
                 </Stack>
             </>           
        

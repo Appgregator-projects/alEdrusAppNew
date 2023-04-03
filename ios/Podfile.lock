@@ -17,6 +17,8 @@ PODS:
     - ExpoModulesCore
   - Expo (48.0.9):
     - ExpoModulesCore
+  - ExpoDevice (5.2.1):
+    - ExpoModulesCore
   - ExpoKeepAwake (12.0.1):
     - ExpoModulesCore
   - ExpoModulesCore (1.2.6):
@@ -402,6 +404,7 @@ DEPENDENCIES:
   - EXLocation (from `../node_modules/expo-location/ios`)
   - EXNotifications (from `../node_modules/expo-notifications/ios`)
   - Expo (from `../node_modules/expo`)
+  - ExpoDevice (from `../node_modules/expo-device/ios`)
   - ExpoKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - ExpoModulesCore (from `../node_modules/expo-modules-core`)
   - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
@@ -473,6 +476,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-notifications/ios"
   Expo:
     :path: "../node_modules/expo"
+  ExpoDevice:
+    :path: "../node_modules/expo-device/ios"
   ExpoKeepAwake:
     :path: "../node_modules/expo-keep-awake/ios"
   ExpoModulesCore:
@@ -571,6 +576,7 @@ SPEC CHECKSUMS:
   EXLocation: 74a0ba446f54fd585ea6cfcd19a25644bf22c30d
   EXNotifications: dd628737af60fc8cc62dccebacd326b0fbbc0dcb
   Expo: 863488a600a4565698a79577117c70b170054d08
+  ExpoDevice: e0bebf68f978b3d353377ce42e73c20c0a070215
   ExpoKeepAwake: 69f5f627670d62318410392d03e0b5db0f85759a
   ExpoModulesCore: 6e0259511f4c4341b6b8357db393624df2280828
   EXSplashScreen: cd7fb052dff5ba8311d5c2455ecbebffe1b7a8ca
@@ -617,6 +623,6 @@ SPEC CHECKSUMS:
   RNSVG: 07dbd870b0dcdecc99b3a202fa37c8ca163caec2
   Yoga: 79dd7410de6f8ad73a77c868d3d368843f0c93e0
 
-PODFILE CHECKSUM: ac7ec21be03737c2168a053ae1d534b55a68d8f4
+PODFILE CHECKSUM: b84b09bff04562e22bdd60af018e0424a7fe31cd
 
 COCOAPODS: 1.12.0

@@ -11,24 +11,31 @@
       "ios": {
         "buildConfiguration": "Debug",
         "resourceClass": "m-medium"
-      }
+      },
+      "channel": "development"
     },
     "preview": {
       "distribution": "internal",
       "ios": {
         "resourceClass": "m-medium"
-      }
+      },
+      "android": {
+        "buildType": "apk"
+      },
+      "channel": "preview"
     },
     "preview2": {
       "android": {
         "gradleCommand": ":app:assembleRelease",
         "buildType": "apk"
-      }
+      },
+      "channel": "preview2"
     },
     "production": {
       "ios": {
         "resourceClass": "m-medium"
-      }
+      },
+      "channel": "production"
     }
   },
   "submit": {

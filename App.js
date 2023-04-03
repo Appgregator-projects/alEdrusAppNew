@@ -44,79 +44,30 @@ export default function App() {
 	const [deviceScan, setDeviceScan] = useState(null);
 	const [showIntro, setShowIntro] = useState(true);
 	const { width, height } = useWindowDimensions();
-	const [userUid, setUserUid] = useState('');
 	const auth = getAuth(app);
-
-	const getUserCredentials = async () => {
-		console.log("in get user credentials");
-		onAuthStateChanged(auth, (user) => {
-		if (user) {
-			// console.log("this is user.uid in navigator: ", user.uid);
-			setUserUid(user.uid);
-
-			// notifShow({
-			// title: "Welcome Back",
-			// message: "Selamat datang kembali, Happy Trading...",
-			// color: "green",
-			// duration: 5000,
-			// });
-		} else {
-			setUserUid(null);
-			// notifShow({
-			// title: "Ups.. Kamu belum login, nih!",
-			// message: "Silahkan login untuk menikmati fitur lengkap kami",
-			// color: "red",
-			// duration: 5000,
-			// });
-		}
-		});
-		try {
-			const docRef = doc(db, "users", authFirebase.currentUser.uid);
-			const docSnap = await getDoc(docRef);
-			// console.log(docSnap.data(), "dataUser docsnap.data()");
-
-		} catch (error) {
-			console.log(error.message, "error in getting user data");
-		}
-
-		// StoreDataObject("user", docSnap.data());
-
-		// const userData = await AsyncStorage.getItem('userData')
-		// console.log(userData,'current async storage user')
-		// setUser(userData)
-	};
 
 	const getUserFromStorage = async () => {
 		const x = await GetDataObject("userData");
 		if (x) setUserStorage(x);
 	};
 
-
-
-
-
-
 	useEffect(() => {
-		getUserCredentials();
 		getUserFromStorage();
 		// const 
 		return () => {};
 	}, []);
-
-
 	
 	const handleDisconnect = (device) => {
 		console.log(device.id, 'ini id')
 		Manager.onDeviceDisconnected(device.id, (error, res) => {
 		console.log(res, 'success disconnected')
-		setDeviceScan(null)
+		// setDeviceScan(null)
 		if (error) {
 			console.log(error)
 		}
 		})
-		setDeviceScan(null)
+		// setDeviceScan(null)
 	};
-
 
 	const data = [
 		{
@@ -138,18 +89,6 @@ export default function App() {
 			image : 'https://static2.mumzworld.com/media/catalog/product/s/b/sbf-zikr1-18c-zikr-smart-tasbih-ring-18mm-rose-gold-16389700426.jpg'
 		},
 	];
-    useEffect(()=>{
-        async () => {
-            let { status } = await Location.getForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                console.log("permission not granted")
-                return;
-            }
-            let address = await Location.reverseGeocodeAsync(location.coords);
-            console.log("address : ", address)
-        }
-    },[])
-
 
 
 	const renderItem = ({item}) => {

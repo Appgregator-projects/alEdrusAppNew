@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useEffect } from 'react'
+import { Alert, StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useRef } from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { useAppDispatch, useAuthState } from '../Context/context';
 import AuthNavigator from './AuthNavigator';
@@ -12,12 +12,15 @@ import * as Location from 'expo-location';
 import dayjs from 'dayjs';
 import axios from 'axios';
 import QiblaScreen from '../Screens/QiblaScreen';
+import * as Notifications from "expo-notifications";
 
 const Tab = createBottomTabNavigator();
 
 const Navigators = () => {
     const { user } = useAuthState();
-    const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch();
+    const notificationListener = useRef();
+    const responseListener = useRef();
 
 	const getLocation = async () => {
 		console.log('getting location...')
@@ -25,35 +28,63 @@ const Navigators = () => {
         if (status !== 'granted') {
             console.log("permission not granted")
             await Location.requestForegroundPermissionsAsync();
+        } else {
+            console.log("permission granted")
+            let location = await Location.getCurrentPositionAsync();
+            let address = await Location.reverseGeocodeAsync(location.coords);
+            console.log(address, "address")
+            console.log(location, "location")
+            if (address) {
+                dispatch({
+                    type : 'UPDATE_ADDRESS',
+                    payload : {
+                        address : address
+                    }
+                });
+                dispatch({
+                    type : "UPDATE_LOCATION",
+                    payload : {
+                        location : location
+                    }
+                })
+                return;
+            };
         };
-        let location = await Location.getCurrentPositionAsync();
-        let address = await Location.reverseGeocodeAsync(location.coords);
-
-		if (address) {
-			dispatch({
-                type : 'UPDATE_ADDRESS',
-                payload : {
-                    address : address
-                }
-            });
-            dispatch({
-                type : "UPDATE_LOCATION",
-                payload : {
-                    location : location
-                }
-            })
-            return;
-		};
 	};
 
     useEffect(()=>{
         getLocation();
+
+            // This listener is fired whenever a notification is received while the app is foregrounded
+            notificationListener.current =
+            Notifications.addNotificationReceivedListener((notification) => {
+            // setNotification(notification);
+            // console.log(notification,'this is data inside notifcation listener')
+            notifShow({
+                title: notification.request.content.title,
+                message: notification.request.content.body,
+                color: "success",
+                duration: 4000,
+            });
+            });
+
+        responseListener.current =
+            Notifications.addNotificationResponseReceivedListener((response) => {
+            //mau di apain ini ?
+            console.log("responsenotificationresponsereceived", response);
+            });
+
+        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+        responseListener.current =
+            Notifications.addNotificationResponseReceivedListener((response) => {
+            console.log(response);
+        });
     },[])
 
   return (
     <>
         <Tab.Navigator
-            initialRouteName="Prayer"
+            initialRouteName="Home"
             screenOptions={({ route }) => ({
             	headerShown : false,
             	tabBarStyle : styles.tabBarStyle,
@@ -79,7 +110,7 @@ const Navigators = () => {
 			    >
             <Tab.Screen 
             	name="Home" 
-            	component={!user ? AuthNavigator  : MainNavigator}
+            	component={MainNavigator}
              />
             <Tab.Screen 
             	name="Devices" 

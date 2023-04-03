@@ -3,35 +3,43 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 let getUser = async () => {
   try {
     const user = await AsyncStorage.getItem("user");
-    return user == null ? "" : JSON.parse(user);
+    if (user) {
+      return JSON.parse(user);
+    } 
   } catch (e) {
     console.log(error);
   }
+  return;
 };
 
 let getZikrCount = async () => {
   try {
     const user = await AsyncStorage.getItem("zikrCount");
-    return user == null ? "" : JSON.parse(user);
+    if (user) {
+      return JSON.parse(user);
+    } 
   } catch (e) {
     console.log(error);
   }
+  return;
 };
 
 let getConnectedDevices = async () => {
   try {
     const user = await AsyncStorage.getItem("connectedDevices");
-    // return user == null ? "" : JSON.parse(user);
-    if (user) return JSON.parse(user)
+    if (user) {
+    return JSON.parse(user);
+    } 
   } catch (e) {
     console.log(error);
   }
+  return;
 };
 
 
 export const initialState = {
   getUser: "" ||  getUser(),
-  user : null ||  getUser(),
+  user : "",
   getZikrCount : 0 ||  getZikrCount(),
   getConnectedDevices :  getConnectedDevices() || [],
   loading: false,

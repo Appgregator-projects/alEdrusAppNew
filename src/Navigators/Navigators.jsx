@@ -30,10 +30,16 @@ const Navigators = () => {
             await Location.requestForegroundPermissionsAsync();
         } else {
             console.log("permission granted")
+            const coords = {
+                "latitude": -5.147665,
+                "longitude": 119.361992,
+            };
+
             let location = await Location.getCurrentPositionAsync();
             let address = await Location.reverseGeocodeAsync(location.coords);
-            console.log(address, "address")
-            console.log(location, "location")
+            // let address = await Location.reverseGeocodeAsync(coords);
+            // console.log(address, "address")
+            // console.log(location, "location")
             if (address) {
                 dispatch({
                     type : 'UPDATE_ADDRESS',

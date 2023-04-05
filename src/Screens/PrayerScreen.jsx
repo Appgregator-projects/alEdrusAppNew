@@ -12,7 +12,7 @@ const PrayerScreen = () => {
     const { width, height } = useWindowDimensions();
     const [prayers, setPrayers] =  useState({});
     const [hijriyahDate, setHijriyahDate] = useState();
-    const { address } = useAuthState();
+    const { address, location } = useAuthState();
 
     
     const getPrayerSchedules = async () => {
@@ -20,9 +20,9 @@ const PrayerScreen = () => {
             const city = await axios.get(`https://api.banghasan.com/sholat/format/json/kota/nama/${address[0]?.city.toLowerCase()}`)
 
             if (city) {
-                console.log('id city nih boss', city.data.kota[0].id);
+                console.log('id city nih boss: ', city);
                 try {
-                const response = await axios.get(`https://api.banghasan.com/sholat/format/json/jadwal/kota/${city.data.kota[0].id}/tanggal/${dayjs().format("YYYY-MM-DD")}`);
+                const response = await axios.get(`https://api.banghasan.com/sholat/format/json/jadwal/kota/${city?.data?.kota[0].id}/tanggal/${dayjs().format("YYYY-MM-DD")}`);
                 console.log(response.data.jadwal.data, "response nih anjay");
                 setPrayers(response.data.jadwal.data)
                 } catch (error) {
@@ -62,6 +62,12 @@ const PrayerScreen = () => {
                         <Heading color='blueGray.200' size='sm' fontWeight={400}>{`${address[0]?.district}, ${address[0]?.city}, ${address[0]?.country}`}</Heading>
                     : <Heading color='blueGray.200' size='sm' fontWeight={400}>Waiting for location...</Heading>}
                 </Stack>
+
+                <Button onPress={()=>{
+                    console.log({location})
+                    console.log({address})
+                }}>Check address</Button>
+
                 <Stack alignItems='center' justifyContent='center' display='flex' flexDirection='column' flex={1}>
                     <Box p={5} rounded="lg" width={width*0.9}>
                         <Heading textAlign='center' color="gray.800" fontWeight={500}>Thursday, March 21 2023</Heading>

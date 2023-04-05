@@ -115,10 +115,9 @@ android {
 
     namespace "com.aledrus"
     defaultConfig {
-        applicationId 'com.alEdrusAppNew'
+        applicationId 'com.aledrus'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        compileSdkVersion rootProject.ext.compileSdkVersion
         versionCode 1
         versionName "1.0.0"
     }
@@ -142,15 +141,13 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true"
-            buildConfigField "boolean", "IS_HERMES_ENABLED", "true"
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
             signingConfig signingConfigs.debug
+            shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
-            buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true"
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
@@ -195,8 +192,6 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-    implementation "com.facebook.react:react-native:+"
-    implementation "com.android.support:multidex:1.0.3"
 
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";

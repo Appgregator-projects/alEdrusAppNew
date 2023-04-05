@@ -84,7 +84,7 @@ const Navigators = () => {
   return (
     <>
         <Tab.Navigator
-            initialRouteName="Home"
+            initialRouteName="Prayer"
             screenOptions={({ route }) => ({
             	headerShown : false,
             	tabBarStyle : styles.tabBarStyle,

@@ -51,7 +51,9 @@ const HomeScreen = ({bluetoothState, setAutoConnect}) => {
 
   return (
     <>
-        <StatusBar barStyle='dark-content' backgroundColor={'red'}/>
+        <StatusBar barStyle='dark-content'
+        //  backgroundColor={'red'}
+         />
         <Header />
         <ScrollView>
         	<Box

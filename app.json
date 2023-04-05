@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Al Edrus",
-    "slug": "alEdrusAppNew",
+    "slug": "aledrus",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,14 +19,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.alEdrusAppNew"
+      "bundleIdentifier": "com.aledrus"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.alEdrusAppNew"
+      "package": "com.aledrus"
     },
     "web": {
       "favicon": "./assets/favicon.png"

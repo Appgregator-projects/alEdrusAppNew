@@ -141,7 +141,8 @@ export default Navigators
 const styles = StyleSheet.create({
 	overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(47,49,54,0.5)',
+    // backgroundColor: 'rgba(47,49,54,0.5)',
+    backgroundColor: '#a18589',
   },
 	tabBarStyle : {
 		backgroundColor : "#054705",
